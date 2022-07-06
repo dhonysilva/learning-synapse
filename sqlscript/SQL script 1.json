@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    YEAR(OrderDate) AS OrderYear,\n    COUNT(*) as OrderedItems\nFROM\n    OPENROWSET(\n        BULK 'https://datalakegs73oqf.dfs.core.windows.net/files/sales/parquet/**',\n        FORMAT = 'PARQUET'\n    ) AS [result]\nGROUP BY YEAR(OrderDate)\nORDER BY (OrderYear)\n\n\n-- Only years 2019 and 2020\n-- This filtering is achieved by including a wildcard for the partition folder value in the BULK path (year=*)\n-- and a WHERE clause based on the filepath property of the results returned by OPENROWSET (which in this case has the alias [result])\nSELECT\n    YEAR(OrderDate) AS OrderYear,\n    COUNT(*) as OrderedItems\nFROM\n    OPENROWSET(\n        BULK 'https://datalakegs73oqf.dfs.core.windows.net/files/sales/parquet/year=*/**',\n        FORMAT = 'PARQUET'\n    ) AS [result]\nWHERE [result].filepath(1) IN ('2019', '2020')\nGROUP BY YEAR(OrderDate)\nORDER BY (OrderYear)",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
