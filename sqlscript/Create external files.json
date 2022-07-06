@@ -2,7 +2,7 @@
 	"name": "Create external files",
 	"properties": {
 		"content": {
-			"query": " \n -- CSV files under sales_data External data sources\n\n -- This query uses the external data source to connect to the data lake, and the OPENROWSET function now only need\n -- to reference the relative path to the .csv files.\n -- BULK busca por /csv folder and *.csv all the csv files.\n SELECT *\n FROM\n     OPENROWSET(\n         BULK 'csv/*.csv',\n         DATA_SOURCE = 'sales_data',\n         FORMAT = 'CSV',\n         PARSER_VERSION = '2.0'\n     ) AS orders",
+			"query": " \n -- CSV files under sales_data External data sources\n\n -- This query uses the external data source to connect to the data lake, and the OPENROWSET function now only need\n -- to reference the relative path to the .csv files.\n -- BULK busca por /csv folder and *.csv all the csv files.\n SELECT *\n FROM\n     OPENROWSET(\n         BULK 'csv/*.csv',\n         DATA_SOURCE = 'sales_data',\n         FORMAT = 'CSV',\n         PARSER_VERSION = '2.0'\n     ) AS orders\n\n -- Reference the relative path to the parquet files.\n -- BULK busca por /parquet folder and *.parquet all the csv files with the wildcard for specific years.\n SELECT *\n FROM  \n     OPENROWSET(\n         BULK 'parquet/year=*/*.snappy.parquet',\n         DATA_SOURCE = 'sales_data',\n         FORMAT='PARQUET'\n     ) AS orders\n WHERE orders.filepath(1) = '2019'",
 			"metadata": {
 				"language": "sql"
 			},
