@@ -1,0 +1,17 @@
+{
+	"name": "Create external files",
+	"properties": {
+		"content": {
+			"query": " \n -- CSV files under sales_data External data sources\n SELECT *\n FROM\n     OPENROWSET(\n         BULK 'csv/*.csv',\n         DATA_SOURCE = 'sales_data',\n         FORMAT = 'CSV',\n         PARSER_VERSION = '2.0'\n     ) AS orders",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "Sales",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
